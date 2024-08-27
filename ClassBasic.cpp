@@ -96,21 +96,15 @@ namespace ClassBasicNamespace {
 	};
 }
 void ClassBasicMain() {
-
-	// 클래스 생성자 및 오버로딩
-	cout << "=================== 클래스 생성자 ===================" << endl;
-	ClassBasicNamespace::MyClass initCls;
-	ClassBasicNamespace::MyClass initClsWithParam(-1, 3);
-	cout << endl;
-
+	
+	ClassBasicNamespace::MyClass overloadingCls;
 	cout << "=================== 함수 오버로딩 ===================" << endl;
-	initCls.printOverloading();
-	initCls.printOverloading(4.1);
+	overloadingCls.printOverloading();
+	overloadingCls.printOverloading(4.1);
 	cout << endl;
-
+	
 	// 오버로딩 룰
 	cout << "=================== 오버로딩 룰 ===================" << endl;
-	ClassBasicNamespace::MyClass overloadingCls(2, 5);
 	cout << "int: 3 ";
 	overloadingCls.printOverloadingRule(3);
 	cout << "char: 4 ";
@@ -120,6 +114,12 @@ void ClassBasicMain() {
 	// double -> int, char 둘 다 가능 (임의의 숫자 타입이 임의의 숫자 타입
 	cout << endl;
 
+	
+	// 클래스 생성자
+	cout << "=================== 클래스 생성자 ===================" << endl;
+	ClassBasicNamespace::MyClass initCls;
+	ClassBasicNamespace::MyClass initClsWithParam(-1, 3);
+	cout << endl;
 
 	// 복사 생성자
 	cout << "=================== 복사 생성자 ===================" << endl;
