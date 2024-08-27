@@ -43,7 +43,7 @@ namespace ClassBasicNamespace {
 		MyClass(const MyClass& cls) {
 			cout << "My Class 복사 생성자 " << endl;
 			// 멤버 변수 값 초기화(deep copy):
-			this->value = cls.value;
+			this->value = cls.value + 1;
 			this->size = cls.size;
 
 			// good case - 새로운 주소에 값이 할당 된다
@@ -62,15 +62,18 @@ namespace ClassBasicNamespace {
 			cout << "printOverloading 오버로딩: 파라미터 있음: " << value * pi << endl;
 		}
 
+		void printOverloadingRule(string str) {
+			cout << "printOverloadingRule 오버로딩 인자 없음: " << value << endl;
+		};
 		void printOverloadingRule(int pi) {
 			cout << "printOverloadingRule 오버로딩 int 타입: " << value * pi << endl;
 		}
 		void printOverloadingRule(double pi) {
 			cout << "printOverloadingRule 오버로딩: double 타입: " << value * pi << endl;
 		}
-		/*void printOverloadingRule(char pi) {
-			cout << "input char type " << radius * pi << endl;
-		}*/
+		void printOverloadingRule(char pi) {
+			cout << "input char type " << value * pi << endl;
+		}
 
 		void initializeArr() {
 			for (int index = 0;index < size;index++) {
@@ -96,13 +99,13 @@ namespace ClassBasicNamespace {
 	};
 }
 void ClassBasicMain() {
-	
+
 	ClassBasicNamespace::MyClass overloadingCls;
 	cout << "=================== 함수 오버로딩 ===================" << endl;
 	overloadingCls.printOverloading();
 	overloadingCls.printOverloading(4.1);
 	cout << endl;
-	
+
 	// 오버로딩 룰
 	cout << "=================== 오버로딩 룰 ===================" << endl;
 	cout << "int: 3 ";
@@ -112,10 +115,11 @@ void ClassBasicMain() {
 	cout << "double: 5.14 ";
 	overloadingCls.printOverloadingRule(5.14); // getAreaOverloadingRule(char pi) 존재 여부에 다라 good case/ bad case
 	// double -> int, char 둘 다 가능 (임의의 숫자 타입이 임의의 숫자 타입
+	// overloadingCls.printOverloadingRule('5');
 	cout << endl;
 
-	
-	// 클래스 생성자
+
+	// 클래스 생성자 및 오버로딩
 	cout << "=================== 클래스 생성자 ===================" << endl;
 	ClassBasicNamespace::MyClass initCls;
 	ClassBasicNamespace::MyClass initClsWithParam(-1, 3);
@@ -123,9 +127,8 @@ void ClassBasicMain() {
 
 	// 복사 생성자
 	cout << "=================== 복사 생성자 ===================" << endl;
-	ClassBasicNamespace::MyClass copyInitClass(overloadingCls);
-	cout << "char: 4 ";
-	overloadingCls.printOverloadingRule('4');
+	ClassBasicNamespace::MyClass clsCopySrc(33, 5);
+	ClassBasicNamespace::MyClass clsCopied(clsCopySrc);
 
 	// 소멸자
 	cout << endl;
@@ -134,14 +137,3 @@ void ClassBasicMain() {
 
 
 }
-
-// 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
-// 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴
-
-// 시작을 위한 팁: 
-//   1. [솔루션 탐색기] 창을 사용하여 파일을 추가/관리합니다.
-//   2. [팀 탐색기] 창을 사용하여 소스 제어에 연결합니다.
-//   3. [출력] 창을 사용하여 빌드 출력 및 기타 메시지를 확인합니다.
-//   4. [오류 목록] 창을 사용하여 오류를 봅니다.
-//   5. [프로젝트] > [새 항목 추가]로 이동하여 새 코드 파일을 만들거나, [프로젝트] > [기존 항목 추가]로 이동하여 기존 코드 파일을 프로젝트에 추가합니다.
-//   6. 나중에 이 프로젝트를 다시 열려면 [파일] > [열기] > [프로젝트]로 이동하고 .sln 파일을 선택합니다.
