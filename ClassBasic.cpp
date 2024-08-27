@@ -4,16 +4,20 @@
 #include <iostream>
 using namespace std;
 
-namespace ClassOverloadingNamespace {
+//todo: const, static https://modoocode.com/197
+
+
+namespace ClassBasicNamespace {
 	//////////////////////////////////////////////////
 	// 키워드: 클래스 생성자, 오버로딩, 소멸자
 	//////////////////////////////////////////////////
 
 	class MyClass {
-	public:
+	private:
 		int value;
 		int size;
 		int* arr;
+	public:
 		MyClass() {
 			// 멤버 변수 값 초기화
 			value = 1;
@@ -21,7 +25,8 @@ namespace ClassOverloadingNamespace {
 			// 멤버 변수 중 포인터 배열 초기화
 			arr = new int[size];
 			initializeArr();
-			cout << "My Class 생성자: 기본 " << value << endl;
+			cout << "My Class 생성자(디폴트): value: " << value << this->size << endl;
+			cout << "생성자 배열 주소: " << &arr[0] << endl;
 		};
 		MyClass(int value, int size) {
 			// 멤버 변수 값 초기화
@@ -31,20 +36,20 @@ namespace ClassOverloadingNamespace {
 			// 멤버 변수 중 포인터 배열 초기화
 			arr = new int[size];
 			initializeArr();
-			std::cout << "My Class 생성자: 파라미터 2개: " << this->value << "  " << this->size << std::endl;
+			std::cout << "My Class 생성자(파라미터): value: " << this->value << "  " << this->size << std::endl;
 
 			cout << "생성자 배열 주소: " << &arr[0] << endl;
 		};
 		MyClass(const MyClass& cls) {
 			cout << "My Class 복사 생성자 " << endl;
-			// 멤버 변수 값 초기화(복붙):
+			// 멤버 변수 값 초기화(deep copy):
 			this->value = cls.value;
 			this->size = cls.size;
 
 			// good case - 새로운 주소에 값이 할당 된다
 			arr = new int[size];
 			initializeArr();
-			
+
 
 			// bad case - 같은 주소를 바라보기 때문에 소멸 명령이 중복되어 처리 > 없는 위치라는 에러가 발생
 			// this->arr = cls.arr;
@@ -58,10 +63,10 @@ namespace ClassOverloadingNamespace {
 		}
 
 		void printOverloadingRule(int pi) {
-			cout << "printOverloadingRule 오버로딩 int 타입: " <<  value * pi << endl;
+			cout << "printOverloadingRule 오버로딩 int 타입: " << value * pi << endl;
 		}
 		void printOverloadingRule(double pi) {
-			cout << "printOverloadingRule 오버로딩: double 타입: " <<  value * pi << endl;
+			cout << "printOverloadingRule 오버로딩: double 타입: " << value * pi << endl;
 		}
 		/*void printOverloadingRule(char pi) {
 			cout << "input char type " << radius * pi << endl;
@@ -75,25 +80,37 @@ namespace ClassOverloadingNamespace {
 		}
 
 		~MyClass() {
-			cout << "My Class 소멸자: " << value << "   "<< arr[size-1]<<endl;
+			cout << "My Class 소멸자: " << value << "   " << arr[size - 1] << endl;
 			delete arr;
 		}
 	};
 
-
+	class MyClassChild : MyClass {
+	public:
+		MyClassChild() {
+			cout << "My Class Child 생성자(기본)" << endl;
+		};
+		~MyClassChild() {
+			cout << "My Class Child 소멸자: " << endl;
+		};
+	};
 }
-int main() {
+void ClassBasicMain() {
 
 	// 클래스 생성자 및 오버로딩
 	cout << "=================== 클래스 생성자 ===================" << endl;
-	ClassOverloadingNamespace::MyClass initCls;
+	ClassBasicNamespace::MyClass initCls;
+	ClassBasicNamespace::MyClass initClsWithParam(-1, 3);
+	cout << endl;
+
+	cout << "=================== 함수 오버로딩 ===================" << endl;
 	initCls.printOverloading();
 	initCls.printOverloading(4.1);
 	cout << endl;
 
 	// 오버로딩 룰
 	cout << "=================== 오버로딩 룰 ===================" << endl;
-	ClassOverloadingNamespace::MyClass overloadingCls(2, 5);
+	ClassBasicNamespace::MyClass overloadingCls(2, 5);
 	cout << "int: 3 ";
 	overloadingCls.printOverloadingRule(3);
 	cout << "char: 4 ";
@@ -106,11 +123,9 @@ int main() {
 
 	// 복사 생성자
 	cout << "=================== 복사 생성자 ===================" << endl;
-	ClassOverloadingNamespace::MyClass copyInitClass(overloadingCls);
+	ClassBasicNamespace::MyClass copyInitClass(overloadingCls);
 	cout << "char: 4 ";
 	overloadingCls.printOverloadingRule('4');
-	cout << "!!! 값 변경!!! (2 -> 3)" << endl;
-	copyInitClass.value = 3;
 
 	// 소멸자
 	cout << endl;
