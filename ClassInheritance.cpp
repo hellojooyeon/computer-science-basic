@@ -7,9 +7,9 @@ using namespace std;
 //todo: const, static https://modoocode.com/197
 
 
-namespace ClassOverloadingNamespace {
+namespace ClassInheritNamespace {
 	//////////////////////////////////////////////////
-	// 키워드: 클래스 생성자, 오버로딩, 소멸자
+	// 키워드: 클래스 상속, virtual
 	//////////////////////////////////////////////////
 
 	class MyClass {
@@ -124,12 +124,26 @@ namespace ClassOverloadingNamespace {
 			cout << "My Class Child 소멸자" << endl;
 		};
 	};
+	
+	class MyClass2 {
+	public:
+		MyClass2() {};
+		void doSomthing() {
+			cout << "MyClass2 function" << endl;
+		}
+	};
+	class MyClassChildMultipleInherit : public MyClass, public MyClass2 {
+	public:
+		MyClassChildMultipleInherit() {
+			cout << "MyClassChildMultipleInherit 다중상속" << endl;
+		};
+	};
 }
 int main() {
 	// 상속
 	cout << endl;
 	cout << "=================== 상속 ===================" << endl;
-	ClassOverloadingNamespace::MyClassChild child;
+	ClassInheritNamespace::MyClassChild child;
 
 	// 접근 지정자
 	cout << endl;
@@ -147,13 +161,20 @@ int main() {
 
 	// is-a
 	cout << "=================== is-a ===================" << endl;
-	ClassOverloadingNamespace::MyClassChild child2(5, 5);
-	ClassOverloadingNamespace::MyClass* p_c = &child2;
-	ClassOverloadingNamespace::MyClass* p_p = new ClassOverloadingNamespace::MyClass(4, 4);
+	ClassInheritNamespace::MyClassChild child2(5, 5);
+	ClassInheritNamespace::MyClass* p_c = &child2;
+	ClassInheritNamespace::MyClass* p_p = new ClassInheritNamespace::MyClass(4, 4);
 	p_c->overridingAction();
 	cout << endl;
 
+	// has-a
+	cout << "=================== has-a ===================" << endl;
+	ClassInheritNamespace::MyClassChildMultipleInherit multipleInheritChild;
+	multipleInheritChild.doSomthing();
+	cout << endl;
+
 	// virtual
+	cout << "=================== virtual ===================" << endl;
 	p_c->printValueNotVirtual();
 	p_c->printValueVirtual();
 	p_p->printValueVirtual();
