@@ -4,15 +4,12 @@
 #include <iostream>
 using namespace std;
 
-//todo: const, static https://modoocode.com/197
-
-
 namespace ClassInheritNamespace {
 	//////////////////////////////////////////////////
 	// 키워드: 클래스 상속, virtual
 	//////////////////////////////////////////////////
 
-	class MyClass {
+	class MyParentClass {
 	private:
 		int value;
 		int size;
@@ -26,17 +23,17 @@ namespace ClassInheritNamespace {
 			return this->value;
 		};
 	public:
-		MyClass() {
+		MyParentClass() {
 			// 멤버 변수 값 초기화
 			value = 1;
 			size = 10;
 			// 멤버 변수 중 포인터 배열 초기화
 			arr = new int[size];
 			initializeArr();
-			cout << "My Class 생성자(디폴트): value: " << value << "  "<< this->size << endl;
+			cout << "부모 생성자(디폴트): value: " << value << "  " << this->size << endl;
 			cout << "생성자 배열 주소: " << &arr[0] << endl;
 		};
-		MyClass(int value, int size) {
+		MyParentClass(int value, int size) {
 			// 멤버 변수 값 초기화
 			this->value = value;
 			this->size = size;
@@ -44,12 +41,12 @@ namespace ClassInheritNamespace {
 			// 멤버 변수 중 포인터 배열 초기화
 			arr = new int[size];
 			initializeArr();
-			std::cout << "My Class 생성자(파라미터): value: " << this->value << "  " << this->size << std::endl;
+			std::cout << "부모 생성자(파라미터): value: " << this->value << "  " << this->size << std::endl;
 
 			cout << "생성자 배열 주소: " << &arr[0] << endl;
 		};
-		MyClass(const MyClass& cls) {
-			cout << "My Class 복사 생성자 " << endl;
+		MyParentClass(const MyParentClass& cls) {
+			cout << "부모 복사 생성자 " << endl;
 			// 멤버 변수 값 초기화(deep copy):
 			this->value = cls.value;
 			this->size = cls.size;
@@ -64,10 +61,10 @@ namespace ClassInheritNamespace {
 			cout << "복사 생성자 배열 주소: " << &arr[0] << endl;
 		};
 		void action() {
-			cout << "My Class action 함수" << endl;
+			cout << "부모 action 함수" << endl;
 		};
 		void overridingAction() {
-			cout << "My Class overridingAction 함수" << endl;
+			cout << "부모 overridingAction 함수" << endl;
 		}
 		int getValuePublic() {
 			cout << "부모 getValuePublic";
@@ -75,7 +72,7 @@ namespace ClassInheritNamespace {
 		};
 
 		void printValueNotVirtual() {
-			cout << "부모 not virtual 함수 " <<  endl;
+			cout << "부모 not virtual 함수 " << endl;
 		}
 
 		virtual void printValueVirtual() {
@@ -90,32 +87,32 @@ namespace ClassInheritNamespace {
 			}
 		}
 
-		~MyClass() {
+		~MyParentClass() {
 			cout << "My Class 소멸자: " << value << "   " << arr[size - 1] << endl;
 			delete arr;
 		}
 	};
 
-	class MyClassChild :public MyClass {
+	class MyClassChild :public MyParentClass {
 	public:
-		MyClassChild(): MyClass() {
-			cout << "My Class Child 생성자(기본)" << endl;
+		MyClassChild() : MyParentClass() {
+			cout << "My Class Child 생성자(디폴트)" << endl;
 		};
-		MyClassChild(int value, int size): MyClass(value, size) {
-			cout << "My Class Child 생성자(인자)" << endl;			
-			
+		MyClassChild(int value, int size) : MyParentClass(value, size) {
+			cout << "My Class Child 생성자(인자)" << endl;
+
 		};
-		MyClassChild(const MyClassChild& target): MyClass(target) {		
+		MyClassChild(const MyClassChild& target) : MyParentClass(target) {
 		}
 		void overridingAction() {
-			cout << "My Class Child overridingAction 함수" << endl;
+			cout << "자식 overridingAction 함수" << endl;
 		}
 		int getValueChildPublic() {
 			cout << "자식 getValueChildPublic -> ";
 			return this->getValueProtected();
 		}
 		void printValueNotVirtual() {
-			cout << "자식 함수 " <<  endl;
+			cout << "자식 함수 " << endl;
 		}
 		void printValueVirtual()override {
 			cout << "자식 virtual 함수 " << endl;
@@ -124,7 +121,7 @@ namespace ClassInheritNamespace {
 			cout << "My Class Child 소멸자" << endl;
 		};
 	};
-	
+
 	class MyClass2 {
 	public:
 		MyClass2() {};
@@ -132,14 +129,14 @@ namespace ClassInheritNamespace {
 			cout << "MyClass2 function" << endl;
 		}
 	};
-	class MyClassChildMultipleInherit : public MyClass, public MyClass2 {
+	class MyClassChildMultipleInherit : public MyParentClass, public MyClass2 {
 	public:
 		MyClassChildMultipleInherit() {
 			cout << "MyClassChildMultipleInherit 다중상속" << endl;
 		};
 	};
 }
-int main() {
+void ClassInheritanceMain() {
 	// 상속
 	cout << endl;
 	cout << "=================== 상속 ===================" << endl;
@@ -148,9 +145,9 @@ int main() {
 	// 접근 지정자
 	cout << endl;
 	cout << "=================== 접근 지정자 ===================" << endl;
-	cout << "public "; 
+	cout << "public ";
 	child.getValuePublic();
-	cout << endl<<"protected ";
+	cout << endl << "protected ";
 	child.getValueChildPublic();
 
 	// 오버라이딩
@@ -162,9 +159,9 @@ int main() {
 	// is-a
 	cout << "=================== is-a ===================" << endl;
 	ClassInheritNamespace::MyClassChild child2(5, 5);
-	ClassInheritNamespace::MyClass* p_c = &child2;
-	ClassInheritNamespace::MyClass* p_p = new ClassInheritNamespace::MyClass(4, 4);
+	ClassInheritNamespace::MyParentClass* p_c = &child2;
 	p_c->overridingAction();
+	//p_c->overridingAction();
 	cout << endl;
 
 	// has-a
@@ -175,6 +172,7 @@ int main() {
 
 	// virtual
 	cout << "=================== virtual ===================" << endl;
+	ClassInheritNamespace::MyParentClass* p_p = new ClassInheritNamespace::MyParentClass(4, 4);
 	p_c->printValueNotVirtual();
 	p_c->printValueVirtual();
 	p_p->printValueVirtual();
